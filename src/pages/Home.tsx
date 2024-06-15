@@ -7,7 +7,7 @@ const Home: React.FC = () => {
     <div>
       <h1 className="mb-4 text-xl font-bold">Welcome to the Quiz Platform</h1>
       <Link to="/quiz" className="mr-4 btn btn-primary">Take Quiz</Link>
-      <Link to="/admin" className="btn btn-secondary">Admin Panel</Link>
+      {/* <Link to="/admin" className="btn btn-secondary">Admin Panel</Link> */}
     </div>
   );
 };
