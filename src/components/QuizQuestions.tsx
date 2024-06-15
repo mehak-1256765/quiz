@@ -54,6 +54,33 @@ const Quiz: React.FC = () => {
   const [showResults, setShowResults] = useState<boolean>(false);
 
   useEffect(() => {
+    // Load saved progress from local storage or initialize new quiz
+    const savedProgress = localStorage.getItem('quizProgress');
+    if (savedProgress) {
+      const parsedProgress = JSON.parse(savedProgress);
+      setQuestions(parsedProgress.questions);
+      setCurrentQuestionIndex(parsedProgress.currentQuestionIndex);
+      setScore(parsedProgress.score);
+      setMessage(parsedProgress.message);
+      setShowResults(parsedProgress.showResults);
+    } else {
+      initializeQuiz();
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save progress to local storage whenever questions or currentQuestionIndex change
+    const progress = {
+      questions,
+      currentQuestionIndex,
+      score,
+      message,
+      showResults,
+    };
+    localStorage.setItem('quizProgress', JSON.stringify(progress));
+  }, [questions, currentQuestionIndex]);
+
+  const initializeQuiz = () => {
     const quizQuestions = all_questions.map((q) => {
       const correctChoiceIndex = Math.floor(Math.random() * (q.choices.wrong.length + 1));
       const choices = [...q.choices.wrong];
@@ -68,7 +95,11 @@ const Quiz: React.FC = () => {
       } as QuizQuestion;
     });
     setQuestions(quizQuestions);
-  }, []);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setMessage('');
+    setShowResults(false);
+  };
 
   const handleChoiceChange = (choiceIndex: number) => {
     const updatedQuestions = questions.map((q, index) =>
@@ -126,6 +157,7 @@ const Quiz: React.FC = () => {
     setScore(0);
     setMessage('');
     setShowResults(false);
+    localStorage.removeItem('quizProgress'); // Remove saved progress on retry
   };
 
   if (questions.length === 0) {
@@ -185,7 +217,7 @@ const Quiz: React.FC = () => {
                   {q.question_string}
                 </p>
                 <p className="ml-4">
-                  Your answer: {q.choices[q.user_choice_index || 0]}<br />
+                  Your answer: {q.user_choice_index !== null ? q.choices[q.user_choice_index] : 'Not answered'}<br />
                   Correct answer: {q.choices[q.correct_choice_index]}
                 </p>
               </div>

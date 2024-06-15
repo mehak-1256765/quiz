@@ -9,9 +9,9 @@ const Home: React.FC = () => {
         <Link to="/quiz" className="px-6 py-3 text-lg font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
           Take Quiz
         </Link>
-        <Link to="/admin" className="px-6 py-3 text-lg font-semibold text-blue-500 bg-white border border-blue-500 rounded hover:text-white hover:bg-blue-500">
+        {/* <Link to="/admin" className="px-6 py-3 text-lg font-semibold text-blue-500 bg-white border border-blue-500 rounded hover:text-white hover:bg-blue-500">
           Admin Panel
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
